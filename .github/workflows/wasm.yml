@@ -16,11 +16,13 @@ jobs:
           echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
           export PATH="$HOME/.wasmedge/bin:$PATH"
 
-          # Install WasmEdge QuickJS (JavaScript Runtime for WASM)
-          wget https://github.com/WasmEdge/WasmEdge/releases/latest/download/wasmedge_quickjs_wasi.tar.gz
-          tar -xvzf wasmedge_quickjs_wasi.tar.gz -C $HOME/.wasmedge/bin
-          echo "✅ WasmEdge & QuickJS installed successfully!"
-
+      - name: Install WasmEdge QuickJS
+        run: |
+            LATEST_VERSION=$(curl -s https://api.github.com/repos/WasmEdge/WasmEdge/releases/latest | grep tag_name | cut -d '"' -f 4)
+            wget "https://github.com/WasmEdge/WasmEdge/releases/download/${LATEST_VERSION}/wasmedge_quickjs_wasi.tar.gz"
+            tar -xvzf wasmedge_quickjs_wasi.tar.gz -C $HOME/.wasmedge/bin
+            echo "✅ WasmEdge QuickJS installed successfully!"
+      
       - name: Verify WasmEdge JavaScript Runtime
         run: |
           which wasmedge_quickjs
