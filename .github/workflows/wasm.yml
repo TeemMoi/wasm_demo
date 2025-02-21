@@ -18,11 +18,10 @@ jobs:
 
       - name: Install WasmEdge QuickJS
         run: |
+            git clone https://github.com/second-state/wasmedge-quickjs
+            cd wasmedge-quickjs    
             curl -OL https://github.com/second-state/wasmedge-quickjs/releases/download/v0.5.0-alpha/wasmedge_quickjs.wasm
             wasmedge compile wasmedge_quickjs.wasm wasmedge_quickjs.wasm
-            echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
-            export PATH="$HOME/.wasmedge/bin:$PATH"
-            echo "✅ WasmEdge QuickJS installed successfully!"
       - name: Run Node.js Test in WASM
         run: |
           echo "🚀 Running test in WebAssembly with QuickJS"
