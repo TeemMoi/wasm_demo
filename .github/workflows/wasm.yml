@@ -24,4 +24,4 @@ jobs:
       - name: Run Node.js Test in WASM
         run: |
           echo "🚀 Running test in WebAssembly with QuickJS"
-          wasmedge test.js
+          wasmedge_quickjs test.js
