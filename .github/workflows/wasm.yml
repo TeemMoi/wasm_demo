@@ -19,10 +19,6 @@ jobs:
       - name: Install WasmEdge QuickJS
         run: |
             wget https://github.com/second-state/wasmedge-quickjs/releases/download/v0.5.0-alpha/wasmedge_quickjs.wasm
-      - name: Verify WasmEdge JavaScript Runtime
-        run: |
-          which wasmedge_quickjs
-          wasmedge_quickjs --version
 
       - name: Run Node.js Test in WASM
         run: |
