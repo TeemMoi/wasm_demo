@@ -10,11 +10,12 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Install WasmEdge + QuickJS
+      - name: Install WasmEdge
         run: |
           curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash
           echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
-          wasmedge --version
+          export PATH="$HOME/.wasmedge/bin:$PATH"
+          echo "✅ WasmEdge installed successfully!"
 
       - name: Install WasmEdge QuickJS for JavaScript Support
         run: |
