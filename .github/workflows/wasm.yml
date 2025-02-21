@@ -17,18 +17,12 @@ jobs:
           export PATH="$HOME/.wasmedge/bin:$PATH"
           echo "✅ WasmEdge installed successfully!"
 
-      - name: Install WasmEdge QuickJS for JavaScript Support
+      - name: Verify WasmEdge Installation
         run: |
-          wget https://github.com/WasmEdge/WasmEdge/releases/latest/download/wasmedge_quickjs_wasi.tar.gz
-          tar -xvzf wasmedge_quickjs_wasi.tar.gz -C $HOME/.wasmedge/bin
-          echo "✅ WasmEdge QuickJS installed successfully!"
+          wasmedge --version
+          which wasmedge
 
-      - name: Verify WasmEdge JavaScript Runtime
+      - name: Compile and Run Test in WASM
         run: |
-          wasmedge_quickjs --version
-          which wasmedge_quickjs
-
-      - name: Run Node.js Test in WASM
-        run: |
-          echo "🚀 Running test in WebAssembly with QuickJS"
-          wasmedge_quickjs test.js
+          echo "🚀 Running test in WebAssembly"
+          wasmedge --dir .:/app node test.js
