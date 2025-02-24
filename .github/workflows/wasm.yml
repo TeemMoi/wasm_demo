@@ -14,21 +14,13 @@ jobs:
         run: |
           curl -sSf https://raw.githubusercontent.com/WasmEdge/WasmEdge/master/utils/install.sh | bash
           echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
-          echo "export PATH=$HOME/.wasmedge/bin:$PATH" >> ~/.bashrc
-          echo "✅ WasmEdge installed successfully!"
+          export PATH="$HOME/.wasmedge/bin:$PATH"
 
-      - name: Verify WasmEdge Installation
+      - name: Install WasmEdge QuickJS (Manual Version)
         run: |
-          echo "🔍 Checking WasmEdge Installation..."
-          ls -la $HOME/.wasmedge/bin
-          which wasmedge || echo "❌ wasmedge not found"
-          wasmedge --version || echo "❌ wasmedge command failed"
-
-      - name: Install WasmEdge QuickJS
-        run: |
-          echo "🔍 Downloading WasmEdge QuickJS..."
-          LATEST_VERSION=$(curl -s https://api.github.com/repos/WasmEdge/WasmEdge/releases/latest | grep tag_name | cut -d '"' -f 4)
-          wget -O wasmedge_quickjs_wasi.tar.gz "https://github.com/WasmEdge/WasmEdge/releases/download/${LATEST_VERSION}/wasmedge_quickjs_wasi.tar.gz"
+          echo "🔍 Manually setting QuickJS version..."
+          QUICKJS_VERSION="0.13.2"  # Check the latest available version on GitHub
+          wget -O wasmedge_quickjs_wasi.tar.gz "https://github.com/WasmEdge/WasmEdge/releases/download/${QUICKJS_VERSION}/wasmedge_quickjs_wasi.tar.gz"
           mkdir -p $HOME/.wasmedge/bin
           tar -xvzf wasmedge_quickjs_wasi.tar.gz -C $HOME/.wasmedge/bin
           chmod +x $HOME/.wasmedge/bin/wasmedge_quickjs
@@ -38,8 +30,6 @@ jobs:
 
       - name: Verify WasmEdge QuickJS Installation
         run: |
-          echo "🔍 Checking WasmEdge QuickJS Installation..."
-          ls -la $HOME/.wasmedge/bin
           which wasmedge_quickjs || echo "❌ wasmedge_quickjs not found"
           wasmedge_quickjs --version || echo "❌ wasmedge_quickjs command failed"
 
