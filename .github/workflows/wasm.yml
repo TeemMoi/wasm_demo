@@ -1,10 +1,10 @@
-name: Docker vs WASM - WebAssembly Runner
+name: WasmEdge Test Automation
 
 on: [push, pull_request]
 
 jobs:
   test-wasm:
-    name: Run CI/CD in WASM
+    name: Run Tests in WebAssembly (WasmEdge)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -16,24 +16,12 @@ jobs:
           echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
           export PATH="$HOME/.wasmedge/bin:$PATH"
 
-      - name: Install WasmEdge QuickJS (Manual Version)
+      - name: Verify WasmEdge Installation
         run: |
-          echo "🔍 Manually setting QuickJS version..."
-          QUICKJS_VERSION="0.13.2"  # Check the latest available version on GitHub
-          wget -O wasmedge_quickjs_wasi.tar.gz "https://github.com/WasmEdge/WasmEdge/releases/download/${QUICKJS_VERSION}/wasmedge_quickjs_wasi.tar.gz"
-          mkdir -p $HOME/.wasmedge/bin
-          tar -xvzf wasmedge_quickjs_wasi.tar.gz -C $HOME/.wasmedge/bin
-          chmod +x $HOME/.wasmedge/bin/wasmedge_quickjs
-          echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
-          echo "export PATH=$HOME/.wasmedge/bin:$PATH" >> ~/.bashrc
-          echo "✅ WasmEdge QuickJS installed successfully!"
+          which wasmedge || echo "❌ WasmEdge not found"
+          wasmedge --version || echo "❌ WasmEdge command failed"
 
-      - name: Verify WasmEdge QuickJS Installation
+      - name: Run WebAssembly Test
         run: |
-          which wasmedge_quickjs || echo "❌ wasmedge_quickjs not found"
-          wasmedge_quickjs --version || echo "❌ wasmedge_quickjs command failed"
-
-      - name: Run JavaScript Test in WASM
-        run: |
-          echo "🚀 Running test in WebAssembly with QuickJS"
-          wasmedge_quickjs test.js
+          echo "🚀 Running test automation in WasmEdge"
+          wasmedge test_script.wasm
