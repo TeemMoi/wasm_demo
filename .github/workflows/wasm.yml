@@ -16,12 +16,13 @@ jobs:
           echo "$HOME/.wasmedge/bin" >> $GITHUB_PATH
           export PATH="$HOME/.wasmedge/bin:$PATH"
 
-      - name: Verify WasmEdge Installation
+      - name: Compile Rust to WASM
         run: |
-          which wasmedge || echo "❌ WasmEdge not found"
-          wasmedge --version || echo "❌ WasmEdge command failed"
+          rustup target add wasm32-wasi
+          rustc --target wasm32-wasi -o test_script.wasm test_script.rs
+
+      - name: Verify WASM File
+        run: ls -la $(pwd)
 
       - name: Run WebAssembly Test
-        run: |
-          echo "🚀 Running test automation in WasmEdge"
-          wasmedge test_script.wasm
+        run: wasmedge test_script.wasm
